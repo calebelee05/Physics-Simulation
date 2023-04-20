@@ -4,24 +4,26 @@ G = 6.6743e-11
 
 class Point:
   def __init__(self, mass, coordinate, dim=2):
-    self.dim = dim
-    self.mass = mass                                        # scalar mass
-    self.coordinate = np.array(coordinate)                  # vector coordinate
-    self.velocity = np.array([0.0 for n in range(dim)])     # vector velocity
-    self.acceleration = np.array([0.0 for n in range(dim)]) # vector acceleration
-    self.dt = 0.1                                           # time step for updating velocity and displacement
+    self.dim = dim                                                          # N-Dimension
+    self.mass = mass                                                        # scalar mass
+    self.coordinate = np.array(coordinate).astype(float)                    # coordinate vector
+    self.velocity = np.array([0.0 for n in range(dim)]).astype(float)       # velocity vector
+    self.ConstantForce = np.array([0.0 for n in range(dim)]).astype(float)  # constant force vector
+    self.dt = 0.1                                                           # timestep for updating velocity and displacement
   
   # Calculate the displacement vector from current position with object 2
   def Displacement(self, other):
     Coordinate1 = self.coordinate
     Coordinate2 = other.coordinate
     displacement = Coordinate2-Coordinate1
+
     return displacement
   
   # Calculate distance from object 2
   def Distance(self, other):
     displacement = self.Displacement(other)
     r = np.linalg.norm(displacement)
+
     return r
   
   # Calculate the graviational force
@@ -34,15 +36,18 @@ class Point:
     F = direction * _F_
     return F
   
-  # Add up the forces to get the net force
-  def NetForce(self, others):
+  # Calculate the total net force
+  def NetForce(self, others=None):
     F = np.array([0.0 for n in range(self.dim)])
-    for other in others:
-      F += self.Force(other)
+    F += self.ConstantForce
+    if others:
+      for other in others:
+        F += self.Force(other)
     return F
   
-  # Update acceleration, velocity, and position of point
-  def update(self, F, dt):
+  # Update the position and velocity
+  def update(self, others=None, dt=0.1):
+    F = self.NetForce(others)
     self.acceleration = F / self.mass
     self.velocity += self.acceleration * dt
     self.coordinate += self.velocity * dt
