@@ -7,8 +7,7 @@ def simulate(points, dt=0.1, steps=1000):
     for i, point in enumerate(points):
       OtherPoints = points.copy()
       del OtherPoints[i]
-      F = point.NetForce(OtherPoints)
-      point.update(F, dt)
+      point.update(OtherPoints, dt)
       Coordinates[i].append(point.coordinate)
   
   # Return the history of the position of each points
