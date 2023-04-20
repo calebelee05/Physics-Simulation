@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 from Simulate import simulate
 
-def Animation(points,frames,interval,save_gif=True,name='Animation.gif'):
+def Animation(points,frames=1000,interval=1,save_gif=True,name='Animation.gif'):
   fig = plt.figure()
   ax = plt.axes(xlim=(-1e5, 1e5), ylim=(-1e5, 1e5))
   ax.set_aspect('equal')
