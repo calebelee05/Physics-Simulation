@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as plt
 from matplotlib import animation
+from Simulate import simulate
 
 def Animation(points,frames,interval,save_gif=True,name='Animation.gif'):
   fig = plt.figure()
